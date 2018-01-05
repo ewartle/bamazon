@@ -24,4 +24,8 @@ function all() {
             console.log("Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price + " || Quantity Available: " + res[i].stock_quantity);
         }
     });
+};
+
+function inquire1 () {
+	
 }
