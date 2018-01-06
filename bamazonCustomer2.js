@@ -52,6 +52,7 @@ function start() {
                 console.log("item chosen: " + chosenItem.product_name);
                 console.log("quantity: " + quantity);
                 console.log("cost: " + cost);
+
                 if (quantity <= chosenItem.stock_quantity) {
 
                   //  console.log("Updating stock quantity...\n");
@@ -65,7 +66,21 @@ function start() {
                             }
                         ],
                         function(err, res) {
-                           // console.log(res.affectedRows + " products updated!\n");
+                            console.log(res.affectedRows + " quantity updated!\n");
+                        }
+                    );
+
+                    var query = connection.query(
+                        "UPDATE products SET ? WHERE ?",
+                        [{
+                                product_sales: cost
+                            },
+                            {
+                                product_name: chosenItem.product_name
+                            }
+                        ],
+                        function(err, res) {
+                           console.log(res.affectedRows + " product sales updated!\n");
                         }
                     );
                     console.log("\n We hope you enjoy your purchase of " + quantity + " " + chosenItem.product_name + "(s).  The total cost of your order is $" + cost + ".  Your order will be shipped shortly.  \n We appreciate any feedback you may have on your purchase. \n");
