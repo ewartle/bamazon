@@ -22,7 +22,7 @@ connection.connect(function(err) {
 function start() {
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
-        console.log("\nWelcome to Bamazon! The following products are avaiable for purchase: \n");
+        console.log("\nWelcome to Bamazon! Please press ctrl-c if you have reached this screen in error.  The following products are avaiable for purchase: \n");
         for (var i = 0; i < res.length; i++) {
             console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price);
         }
@@ -55,7 +55,7 @@ function start() {
 
                 if (quantity <= chosenItem.stock_quantity) {
 
-                  //  console.log("Updating stock quantity...\n");
+                 
                     var query = connection.query(
                         "UPDATE products SET ? WHERE ?",
                         [{
@@ -73,7 +73,7 @@ function start() {
                     var query = connection.query(
                         "UPDATE products SET ? WHERE ?",
                         [{
-                                product_sales: cost
+                                product_sales: chosenItem.product_sales + cost
                             },
                             {
                                 product_name: chosenItem.product_name
@@ -84,13 +84,33 @@ function start() {
                         }
                     );
                     console.log("\n We hope you enjoy your purchase of " + quantity + " " + chosenItem.product_name + "(s).  The total cost of your order is $" + cost + ".  Your order will be shipped shortly.  \n We appreciate any feedback you may have on your purchase. \n");
-                    start();
+                    finish();
                 } else {
                     console.log("\n We are sorry.  We only have " + chosenItem.stock_quantity + " left in stock.  Please check in at a later time. \n")
-                    start();
+                    finish();
                     
                 }
 
             });
     });
 };
+
+function finish() {
+    inquirer
+        .prompt({
+            name: "finish",
+            type: "rawlist",
+            message: "Would you like to [Purchase an Additional Item] or [End Your Session]?",
+            choices: ["Purchase", "End"]
+        })
+        .then(function(answer) {
+           
+            if (answer.finish.toUpperCase() === "PURCHASE") {
+                start();
+            } else {
+                console.log("Thank you and please visit us again soon.");
+                connection.end();
+
+            }
+        });
+}

@@ -25,7 +25,7 @@ function start() {
         .prompt({
             name: "action",
             type: "list",
-            message: "\nWelcome Manager!  What would you like to do?",
+            message: "\nWelcome Manager!  Press ctrl-c if you have reached this screen in error.  What would you like to do?",
             choices: [
                 "View Products for Sale",
                 "View Low Inventory",
@@ -59,9 +59,9 @@ function allAvailable() {
         if (err) throw err;
         console.log("\nThe following products are in stock and available for sale: \n");
         for (var i = 0; i < res.length; i++) {
-            console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price + " || Quantity: " + res[i].stock_quantity);
+            console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price + " || Quantity: " + res[i].stock_quantity + " || Product Sales/Revenue: " + res[i].product_sales);
         }
-        start();
+        finish();
     });
 };
 
@@ -74,7 +74,7 @@ function low() {
                 console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price + " || Quantity: " + res[i].stock_quantity);
             }
         }
-        start();
+        finish();
     });
 };
 
@@ -119,7 +119,7 @@ function addInv() {
 
                         if (err) throw err;
                         console.log(res.affectedRows + " products updated!\n");
-                        start();
+                        finish();
                     }
                 );
 
@@ -174,8 +174,28 @@ function addNew() {
                 function(err) {
                     if (err) throw err;
                     console.log("Your product has been added to inventory");
-                    start();
+                    finish();
                 }
             );
         });
 };
+
+function finish() {
+    inquirer
+        .prompt({
+            name: "finish",
+            type: "rawlist",
+            message: "Would you like to [Perform Another Action] or [End Your Session]?",
+            choices: ["Perform", "End"]
+        })
+        .then(function(answer) {
+           
+            if (answer.finish.toUpperCase() === "PERFORM") {
+                start();
+            } else {
+                console.log("Thank you and keep up the good work.");
+                connection.end();
+
+            }
+        });
+}
