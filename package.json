@@ -9,10 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "inquirer": "^1.2.2",
-    "mysql": "^2.11.1",
     "body-parser": "^1.14.2",
+    "console.table": "^0.9.1",
     "express": "^4.13.4",
-    "express-handlebars": "^3.0.0"
+    "express-handlebars": "^3.0.0",
+    "inquirer": "^1.2.2",
+    "mysql": "^2.11.1"
   }
 }
