@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-
+var console1 = require("console.table");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -58,9 +58,10 @@ function allAvailable() {
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
         console.log("\nThe following products are in stock and available for sale: \n");
-        for (var i = 0; i < res.length; i++) {
-            console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price + " || Quantity: " + res[i].stock_quantity + " || Product Sales/Revenue: " + res[i].product_sales);
-        }
+        console.table(res);
+       // for (var i = 0; i < res.length; i++) {
+         //   console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price + " || Quantity: " + res[i].stock_quantity + " || Product Sales/Revenue: " + res[i].product_sales);
+        //}
         finish();
     });
 };
@@ -72,6 +73,7 @@ function low() {
         for (var i = 0; i < res.length; i++) {
             if (res[i].stock_quantity < 5) {
                 console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price + " || Quantity: " + res[i].stock_quantity);
+                
             }
         }
         finish();
@@ -83,10 +85,8 @@ function addInv() {
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
         console.log("\nHere are the current items in inventory: \n")
-        for (var i = 0; i < res.length; i++) {
-            console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price + " || Quantity: " + res[i].stock_quantity);
-
-        }
+        console.table(res);
+        
         inquirer
             .prompt([{
                     name: "choice",

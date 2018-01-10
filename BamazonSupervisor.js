@@ -46,21 +46,15 @@ function start() {
 function allView() {
 
 
-    var query = "SELECT departments.department_id, departments.department_name, departments.over_head_costs, SUM(products.product_sales) AS product_sales,  CONCAT (departments.over_head_costs, SUM(products.product_sales)) AS total_profit FROM departments LEFT JOIN products ON (departments.department_name = products.department_name) GROUP BY department_id;"
 
+   var query = "SELECT departments.department_id, departments.department_name, departments.over_head_costs, SUM(products.product_sales) AS product_sales,  (departments.over_head_costs + SUM(products.product_sales)) AS total_profit FROM departments LEFT JOIN products ON (departments.department_name = products.department_name) GROUP BY department_id;"
     connection.query(query, function(err, res) {
 
 
-        if (err) throw err;
-
-        console.log("\nBelow please find the product sales by department: \n  | department_id | department_name | over_head_costs | product_sales | total_profit |");
-
-        for (var i = 0; i < res.length; i++) {
-            var sales = parseInt(res[i].product_sales);
-            var totalProfits = parseInt(res[i].product_sales + res[i].over_head_costs);
-
-            console.log("|                " + res[i].department_id + "|     " + res[i].department_name + "|           " + res[i].over_head_costs + "|              " + sales + "|       " + totalProfits);
-        }
+       if (err) throw err;
+        
+        console.log("\nBelow please find the product sales by department: \n");  
+        console.table( res );
 
         finish();
     });
@@ -123,37 +117,3 @@ function finish() {
         });
 }
 
-
-
-//console.log("\nBelow please find the product sales by department: \n  | department_id | department_name | over_head_costs | product_sales | total_profit |");
-//console.log("\nBelow please find the product sales by department:\n| department_id | department_name | over_head_costs |"); 
-//console.log("|---------------|-----------------|-----------------|")
-// console.table([{
-//    department_id: "",
-//    department_name: "",
-//    over_head_costs: "",
-//    product_sales: "",
-// }]);
-
-//var values = [res[i].department_id, res[i].department_name, res[i].over_head_costs, sales];
-//console.table(['department_id', 'department_name', 'over_head_costs', 'product_sales'], values);
-//console.log(values);
-
-//       var di
-//       var dn
-//       var over
-//       var sale
-// console.log("\nBelow please find the product sales by department: \n  | department_id | department_name | over_head_costs | product_sales | total_profit |");
-
-
-//           di = res[i].department_id;
-///            dn = res[i].department_name;
-//            over = res[i].over_head_costs;
-//           sale = sales;
-
-//            console.table([{
-//               department_id: di,
-//               over_head_costs: dn,
-//              product_sales: over,
-//               total_profit: sales,
-//          }]);

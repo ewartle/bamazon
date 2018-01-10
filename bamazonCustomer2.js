@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-
+var console1 = require("console.table");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -23,9 +23,7 @@ function start() {
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
         console.log("\nWelcome to Bamazon! Please press ctrl-c if you have reached this screen in error.  The following products are avaiable for purchase: \n");
-        for (var i = 0; i < res.length; i++) {
-            console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price);
-        }
+        console.table(res);
         inquirer
             .prompt([{
                     name: "choice",
@@ -66,7 +64,7 @@ function start() {
                             }
                         ],
                         function(err, res) {
-                            console.log(res.affectedRows + " quantity updated!\n");
+                           // console.log(res.affectedRows + " quantity updated!\n");
                         }
                     );
 
@@ -80,7 +78,7 @@ function start() {
                             }
                         ],
                         function(err, res) {
-                           console.log(res.affectedRows + " product sales updated!\n");
+                    //       console.log(res.affectedRows + " product sales updated!\n");
                         }
                     );
                     console.log("\n We hope you enjoy your purchase of " + quantity + " " + chosenItem.product_name + "(s).  The total cost of your order is $" + cost + ".  Your order will be shipped shortly.  \n We appreciate any feedback you may have on your purchase. \n");
