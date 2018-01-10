@@ -13,9 +13,9 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
     if (err) throw err;
-   // console.log("connected as id " + connection.threadId);
+    // console.log("connected as id " + connection.threadId);
     start();
-    
+
 });
 
 
@@ -23,7 +23,9 @@ function start() {
     connection.query("SELECT * FROM products", function(err, res) {
         if (err) throw err;
         console.log("\nWelcome to Bamazon! Please press ctrl-c if you have reached this screen in error.  The following products are avaiable for purchase: \n");
-        console.table(res);
+        for (var i = 0; i < res.length; i++) {
+            console.log("ID:  " + res[i].id + " || Product: " + res[i].product_name + " || Department: " + res[i].department_name + " || Price: " + res[i].price);
+        }
         inquirer
             .prompt([{
                     name: "choice",
@@ -53,10 +55,9 @@ function start() {
 
                 if (quantity <= chosenItem.stock_quantity) {
 
-                 
+
                     var query = connection.query(
-                        "UPDATE products SET ? WHERE ?",
-                        [{
+                        "UPDATE products SET ? WHERE ?", [{
                                 stock_quantity: chosenItem.stock_quantity - quantity
                             },
                             {
@@ -64,13 +65,12 @@ function start() {
                             }
                         ],
                         function(err, res) {
-                           // console.log(res.affectedRows + " quantity updated!\n");
+                            // console.log(res.affectedRows + " quantity updated!\n");
                         }
                     );
 
                     var query = connection.query(
-                        "UPDATE products SET ? WHERE ?",
-                        [{
+                        "UPDATE products SET ? WHERE ?", [{
                                 product_sales: chosenItem.product_sales + cost
                             },
                             {
@@ -78,7 +78,7 @@ function start() {
                             }
                         ],
                         function(err, res) {
-                    //       console.log(res.affectedRows + " product sales updated!\n");
+                            //       console.log(res.affectedRows + " product sales updated!\n");
                         }
                     );
                     console.log("\n We hope you enjoy your purchase of " + quantity + " " + chosenItem.product_name + "(s).  The total cost of your order is $" + cost + ".  Your order will be shipped shortly.  \n We appreciate any feedback you may have on your purchase. \n");
@@ -86,7 +86,7 @@ function start() {
                 } else {
                     console.log("\n We are sorry.  We only have " + chosenItem.stock_quantity + " left in stock.  Please check in at a later time. \n")
                     finish();
-                    
+
                 }
 
             });
@@ -102,7 +102,7 @@ function finish() {
             choices: ["Purchase", "End"]
         })
         .then(function(answer) {
-           
+
             if (answer.finish.toUpperCase() === "PURCHASE") {
                 start();
             } else {
