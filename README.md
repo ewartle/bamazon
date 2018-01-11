@@ -7,4 +7,7 @@ In the second interface, the app engages with a manager.  Accessing the products
 
 The third interface can be accessed by a Supervisor and utilizes the departments database.  This database allows the supervisor to view all departments, the total sales for each department (by combining product sales for each item in a given department), and the total profits for each department.  In addition, the supervisor can add a new department.    
 
+Here is a link to a video demonstration of the app:  https://drive.google.com/drive/folders/1UXxq7sUcfWW2HFqd7NMyyfHhKBiRccav?usp=sharing
+
 Thank you for your interest in this application.  
+
